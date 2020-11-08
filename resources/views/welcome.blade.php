@@ -3,8 +3,7 @@
 <head>
     <title>Pathology Lab</title>
     <!-- Meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <meta charset="utf-8"> 
     <link rel="shortcut icon" href="favicon.ico">  
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <!-- FontAwesome JS -->
@@ -230,7 +229,7 @@
                                 <li class="list-inline-item"><a class="github" href="#" target="_blank"><i class="fab fa-github"></i></a></li>        
                             </ul>
                             <div class="member-desc">
-                               <p>Siddhesh is the UX/UI designer behind AppKit Landing. He makes free Bootstrap themes for developers. You can find her sharing useful UX and webdev related content on Twitter and Facebook. Follow her if you like what she does!</p>
+                               <p>Siddhesh is the UX/UI designer behind AppKit Landing. He makes free Bootstrap themes for developers. You can find her sharing useful UX and webdev related content on Twitter and Facebook. Follow him if you like what she does!</p>
                             </div><!--//member-desc-->
                         </div><!--//member-content-->
                     </div><!--//item-inner-->
@@ -298,7 +297,6 @@
 
      
     <!-- Javascript -->          
-    
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
        
