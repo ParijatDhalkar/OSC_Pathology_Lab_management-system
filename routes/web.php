@@ -27,4 +27,8 @@ Route::prefix('admin')->group(function() {
     Route::get('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'login'])->name('admin.login.submit');
     Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
+
+    Route::resource('tests', 'App\Http\Controllers\TestsController');
+    Route::resource('slots', 'App\Http\Controllers\SlotsController');
+
 });
