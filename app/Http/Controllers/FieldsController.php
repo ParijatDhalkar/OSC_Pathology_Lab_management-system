@@ -3,25 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Field;
 use App\Models\Test;
-use App\Models\User;
+use Session;
 
-class AppointmentsController extends Controller
+class FieldsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    
     public function index()
     {
-        return view('appointments.index');
+        $fields = Field::paginate(25);
+
+        return view('fields.index', compact('fields'));
     }
 
     /**
@@ -32,21 +29,13 @@ class AppointmentsController extends Controller
     public function create()
     {
         $tests = Test::all();
-        $patients = User::all();
         
-        $patient_data = [];
-        $test_data = [];
-        
-        foreach ($patients as $patient) {
-            $patient_data[$patient->id] = $patient->fullname;
-        }
         foreach ($tests as $test) {
             $test_data[$test->id] = $test->name;
+            error_log(gettype($test_data));
         }
-        //dd($patient_data);
-        //dd($test_data);
-        return view('appointments.create', ['tests' => $test_data, 'patients' => $patient_data]);
 
+        return view('fields.create', ['tests' => $test_data]);
     }
 
     /**
@@ -57,7 +46,13 @@ class AppointmentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $requestData = $request->all();
+        
+        Field::create($requestData);
+
+        Session::flash('flash_message', 'Field added!');
+
+        return redirect('admin/fields');
     }
 
     /**
@@ -68,7 +63,9 @@ class AppointmentsController extends Controller
      */
     public function show($id)
     {
-        //
+        $field = Field::findOrFail($id);
+
+        return view('fields.show', compact('field'));
     }
 
     /**
@@ -79,7 +76,15 @@ class AppointmentsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $field = Field::findOrFail($id);
+
+        $tests = Test::all();
+        
+        foreach ($tests as $test) {
+            $test_data[$test->id] = $test->name;
+        }
+
+        return view('fields.edit', compact('field'));
     }
 
     /**
@@ -91,7 +96,14 @@ class AppointmentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $requestData = $request->all();
+        
+        $field = Field::findOrFail($id);
+        $field->update($requestData);
+
+        Session::flash('flash_message', 'Field updated!');
+
+        return redirect('admin/fields');
     }
 
     /**
@@ -102,6 +114,10 @@ class AppointmentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Field::destroy($id);
+
+        Session::flash('flash_message', 'Field deleted!');
+
+        return redirect('admin/fields');
     }
 }

@@ -21,7 +21,7 @@
               <li><a href="{{ route('tests.create') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
               <li><a href="{{ route('tests.index') }}"><i class="fa fa-circle-o"></i> View All</a></li>
               <li><a href="{{ route('slots.index') }}"><i class="fa fa-circle-o"></i> Slots</a></li>
-              <li><a href="#"><i class="fa fa-circle-o"></i> Fields</a></li>
+              <li><a href="{{ route('fields.index') }}"><i class="fa fa-circle-o"></i> Fields</a></li>
             </ul>
 
           </li>

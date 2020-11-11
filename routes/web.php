@@ -26,9 +26,12 @@ Route::resource('appointments', 'App\Http\Controllers\AppointmentsController');
 Route::prefix('admin')->group(function() {
     Route::get('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'login'])->name('admin.login.submit');
-    Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/', [App\Http\Controllers\TestsController::class, 'index']);
 
     Route::resource('tests', 'App\Http\Controllers\TestsController');
+
     Route::resource('slots', 'App\Http\Controllers\SlotsController');
+
+    Route::resource('fields', 'App\Http\Controllers\FieldsController');
 
 });
