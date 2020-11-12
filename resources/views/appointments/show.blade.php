@@ -11,7 +11,7 @@
                 <div class="panel-heading">Appointment ID: {{ $appointment->id }}</div>
                 <div class="panel-body">
                     @if(Auth::guard('web')->check())
-                        <a href="{{ url('appointments/' . $appointment->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
+                        
                         {!! Form::open([
                             'method'=>'DELETE',
                             'url' => ['appointments', $appointment->id],

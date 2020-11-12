@@ -89,7 +89,7 @@
                                                 @else
 
                                                     <a href="{{ url('/appointments/' . $item->id) }}" class="btn btn-success btn-xs" title="View Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
-                                                    <a href="{{ url('/appointments/' . $item->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
+                                                    
                                                     {!! Form::open([
                                                         'method'=>'DELETE',
                                                         'url' => ['/appointments', $item->id],
