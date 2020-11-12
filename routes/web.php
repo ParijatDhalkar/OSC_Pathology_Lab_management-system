@@ -22,6 +22,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('appointments', 'App\Http\Controllers\AppointmentsController');
+Route::post('/appointments/check', [App\Http\Controllers\AppointmentsController::class, 'checkAvailableSlots']);
 
 Route::prefix('admin')->group(function() {
     Route::get('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'showLoginForm'])->name('admin.login');

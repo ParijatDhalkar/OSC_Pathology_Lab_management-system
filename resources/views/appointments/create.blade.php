@@ -49,6 +49,53 @@
     });
 </script>
 
+
+<script>
+
+    //Lockr.rm('test_id');
+    //console.log('test');
+    console.log(Lockr.get('test_id'));
+    console.log(Lockr.get('slot_id'));
+    
+    var test_id = Lockr.get('test_id');
+    var slot_id = Lockr.get('slot_id');
+    var slot_time = Lockr.get('slot_time');
+  
+    if ( test_id != null) {
+      $('#test_name').val(test_id);
+    }
+    if ( slot_id != null && slot_time != null) {
+      $('.slot_info').show();
+      $('.selected_slot').text(slot_time);
+    }
+    // $(document).ready(function(){
+  
+    //     // check if pre selected vales are present in local storage
+    //     Lockr.rm('test_id');
+    //     Lockr.flush();
+    //     console.log('test');
+    //     console.log(Lockr.get('test_id'));
+    //     console.log(Lockr.get('slot_id'));
+        
+    // });
+  
+    $('.form-btn').on('click', function(e){
+  
+      e.preventDefault();
+      Lockr.flush();
+      $('.my-form').submit();
+    });
+  
+</script>
+  
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
+
 <script>
     $('#test_name').on('change', function (e) {
 
@@ -78,7 +125,7 @@
         $.ajax({
            url: '/appointments/check',
 
-           type: 'GET',
+           type: 'POST',
 
            dataType: 'json',
 
@@ -89,12 +136,16 @@
            },
 
            error: function(data) {
+            console.log(data.responseText);
+            alert(data.responseText);
+              console.log("Here");
               console.log(data);
               $('#loader').fadeOut(100);
               $('#loader').html('<p>Something went wrong!</p>');
            },
 
            success: function(data) {
+            console.log("Not Here");
               console.log(data);
               $('#loader').fadeOut(100);
               $('#slot_container > p').remove();
