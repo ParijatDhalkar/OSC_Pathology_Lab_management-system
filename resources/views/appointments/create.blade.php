@@ -87,14 +87,7 @@
     });
   
 </script>
-  
-<script type="text/javascript">
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-</script>
+ 
 
 <script>
     $('#test_name').on('change', function (e) {
@@ -134,6 +127,10 @@
               date: date
 
            },
+
+           headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
 
            error: function(data) {
             console.log(data.responseText);
