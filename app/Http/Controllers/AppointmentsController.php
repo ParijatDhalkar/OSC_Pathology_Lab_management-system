@@ -8,12 +8,15 @@ use App\Models\User;
 use App\Models\Slot;
 use App\Models\Appointment;
 use Session;
+use Auth;
 
 class AppointmentsController extends Controller
 {
+    public $isAdmin = false;
+
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:web,admin');
     }
     
     /**
@@ -24,8 +27,11 @@ class AppointmentsController extends Controller
     
     public function index()
     {
+        error_log("Inside index page");
         $appointments = Appointment::paginate(25);
-        return view('appointments.index', compact('appointments'));
+        if(Auth::guard('web')->check())
+            return view('appointments.index', compact('appointments')); 
+        return view('appointments.admin_index', compact('appointments')); 
     }
 
     /**
@@ -92,9 +98,11 @@ class AppointmentsController extends Controller
     {
         $appointment = Appointment::findOrFail($id);
         $slot = Slot::findOrFail($appointment->slot_id);
-        //dd($appointment->slot->time);
-
-        return view('appointments.show', ['appointment' => $appointment, 'slot' => $slot->time]);
+        if(Auth::guard('web')->check())
+            return view('appointments.show', ['appointment' => $appointment, 'slot' => $slot->time]);
+        return view('appointments.admin_show', ['appointment' => $appointment, 'slot' => $slot->time]); 
+        
+        
     }
 
     /**
@@ -105,7 +113,23 @@ class AppointmentsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tests = Test::all();
+        $patients = User::all();
+        //dd($patients);
+        foreach ($patients as $patient) {
+            $patient_data[$patient->id] = $patient->name;
+        }
+        foreach ($tests as $test) {
+            $test_data[$test->id] = $test->name;
+        }
+
+        $appointment = Appointment::findOrFail($id);
+        $slot = Slot::findOrFail($appointment->slot_id);
+
+        return view('appointments.edit', ['appointment' => $appointment, 
+                'patients' => $patient_data,
+                'slot' => $slot->time,
+                'tests' => $test_data]);
     }
 
     /**
@@ -117,7 +141,14 @@ class AppointmentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $requestData = $request->all();
+        
+        $appointment = Appointment::findOrFail($id);
+        $appointment->update($requestData);
+
+        Session::flash('flash_message', 'Appointment updated!');
+
+        return redirect('appointments');
     }
 
     /**

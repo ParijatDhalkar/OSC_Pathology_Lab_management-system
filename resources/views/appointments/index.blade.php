@@ -1,4 +1,5 @@
 @extends('layouts.user')
+    
 @section('content')
 
     <section class="content">
@@ -40,7 +41,7 @@
                                 @foreach($appointments as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->patient->full_name }}</td>
+                                        <td>{{ $item->patient->name }}</td> 
                                         <td>{{ $item->test->name }}</td>
                                         @php
                                             $color;
@@ -89,7 +90,7 @@
                                                 @else
 
                                                     <a href="{{ url('/appointments/' . $item->id) }}" class="btn btn-success btn-xs" title="View Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
-                                                    
+                                                    <a href="{{ url('/appointments/' . $item->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
                                                     {!! Form::open([
                                                         'method'=>'DELETE',
                                                         'url' => ['/appointments', $item->id],

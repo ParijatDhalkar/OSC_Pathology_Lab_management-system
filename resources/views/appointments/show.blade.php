@@ -11,7 +11,7 @@
                 <div class="panel-heading">Appointment ID: {{ $appointment->id }}</div>
                 <div class="panel-body">
                     @if(Auth::guard('web')->check())
-                        
+                        <a href="{{ url('/appointments/' . $appointment->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
                         {!! Form::open([
                             'method'=>'DELETE',
                             'url' => ['appointments', $appointment->id],
@@ -36,9 +36,9 @@
                                     'title' => 'Collect Sample',
                                     'data-toggle' => 'tooltip'
                             )) !!}
-                            {{ Form::hidden('appointment_id', $item->id) }}
-                            {{ Form::hidden('patient_id', $item->patient->id) }}
-                            {{ Form::hidden('test_id', $item->test->id) }}
+                            {{ Form::hidden('appointment_id', $appointment->id) }}
+                            {{ Form::hidden('patient_id', $appointment->patient->id) }}
+                            {{ Form::hidden('test_id', $appointment->test->id) }}
                         {!! Form::close() !!}
                     @endif
                     <br/>
