@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+
 use App\Models\Test;
 use App\Models\User;
 use App\Models\Slot;
+use App\Models\Invoice;
 use App\Models\Appointment;
+
 use Session;
 use Auth;
 
 class AppointmentsController extends Controller
 {
-    public $isAdmin = false;
 
     public function __construct()
     {
@@ -77,7 +80,7 @@ class AppointmentsController extends Controller
         $appointment = Appointment::create($requestData);
 
         // create invoice for this appointment
-        //$id = $this->createInvoice($appointment);
+        $id = $this->createInvoice($appointment);
 
         //dd($id);
 
@@ -164,6 +167,20 @@ class AppointmentsController extends Controller
         Session::flash('flash_message', 'Appointment deleted!');
 
         return redirect('appointments');
+    }
+
+    private function createInvoice($appointment){
+
+        $invoice = new Invoice();
+
+        $invoice->appointment_id = $appointment->id;
+        $invoice->amount = $appointment->test->cost;
+        $invoice->due_date = Carbon::today()->addDays(3);
+        $invoice->status = 'unpaid';
+
+        $invoice->save();
+
+        return $invoice->id;
     }
 
     public function checkAvailableSlots(Request $request){

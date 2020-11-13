@@ -27,7 +27,7 @@
                     @else 
                         {!! Form::open([
                             'method'=>'GET',
-                            'url' => ['/samples/create'],
+                            'url' => ['/admin/samples/create'],
                             'style' => 'display:inline'
                         ]) !!}
                             {!! Form::button('<span class="glyphicon glyphicon-share" aria-hidden="true"/>', array(

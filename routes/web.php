@@ -24,6 +24,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('appointments', 'App\Http\Controllers\AppointmentsController');
 Route::post('/appointments/check', [App\Http\Controllers\AppointmentsController::class, 'checkAvailableSlots']);
 
+Route::get('/invoices', [App\Http\Controllers\InvoicesController::class, 'index'])->name('invoices.index_user');
+
+
 Route::prefix('admin')->group(function() {
     Route::get('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'login'])->name('admin.login.submit');
@@ -34,5 +37,9 @@ Route::prefix('admin')->group(function() {
     Route::resource('slots', 'App\Http\Controllers\SlotsController');
 
     Route::resource('fields', 'App\Http\Controllers\FieldsController');
+
+    Route::resource('samples', 'App\Http\Controllers\SamplesController');
+
+    Route::resource('invoices', 'App\Http\Controllers\InvoicesController');
 
 });
