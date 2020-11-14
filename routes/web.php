@@ -31,6 +31,7 @@ Route::get('/reports', [App\Http\Controllers\ReportsController::class, 'index'])
 Route::get('/reports/{report}', [App\Http\Controllers\ReportsController::class, 'show'])->name('reports.show_user');
 
 Route::prefix('admin')->group(function() {
+    
     Route::get('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'login'])->name('admin.login.submit');
     Route::get('/', [App\Http\Controllers\TestsController::class, 'index']);

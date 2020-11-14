@@ -18,8 +18,6 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Invoices</div>
                     <div class="panel-body">
-
-                        <a href="{{ url('/invoices/create') }}" class="btn btn-primary btn-xs" title="Add New Invoice"><span class="glyphicon glyphicon-plus" aria-hidden="true"/></a>
                         <br/>
                         <br/>
                         <div class="table-responsive">
@@ -55,15 +53,13 @@
                                         <td>
 
                                             @if($item->status == 'paid') 
-                                            <a href="{{ url('/invoices/' . $item->id) }}" class="btn btn-success btn-xs" data-toggle="tooltip" title="View Invoice"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
+                                            <a href="{{ url('/admin/invoices/' . $item->id) }}" class="btn btn-success btn-xs" data-toggle="tooltip" title="View Invoice"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
                                             @else
 
-                                            <a href="{{ url('/invoices/' . $item->id) }}" class="btn btn-success btn-xs" data-toggle="tooltip" title="View Invoice"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
-                                            <a href="{{ url('/invoices/' . $item->id . '/edit') }}" data-toggle="tooltip" class="btn btn-primary btn-xs" title="Edit Invoice"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
-
+                                            <a href="{{ url('/admin/invoices/' . $item->id) }}" class="btn btn-success btn-xs" data-toggle="tooltip" title="View Invoice"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
                                             {!! Form::open([
                                                 'method'=>'DELETE',
-                                                'url' => ['/invoices', $item->id],
+                                                'url' => ['/admin/invoices', $item->id],
                                                 'style' => 'display:inline'
                                             ]) !!}
                                                 {!! Form::button('<span class="glyphicon glyphicon-trash" aria-hidden="true"/>', array(
@@ -75,19 +71,6 @@
                                                 )) !!}
                                             {!! Form::close() !!}
 
-                                            {!! Form::open([
-                                                'method'=>'GET',
-                                                'url' => ['/admin/payments/create'],
-                                                'style' => 'display:inline'
-                                            ]) !!}
-                                                {!! Form::button('<span class="glyphicon glyphicon-usd" aria-hidden="true"/>', array(
-                                                        'type' => 'submit',
-                                                        'class' => 'btn btn-info btn-xs',
-                                                        'title' => 'Make Payment',
-                                                        'data-toggle' => 'tooltip'
-                                                )) !!}
-                                                {{ Form::hidden('invoice_id', $item->id) }}
-                                            {!! Form::close() !!}
                                             @endif
 
                                         </td>

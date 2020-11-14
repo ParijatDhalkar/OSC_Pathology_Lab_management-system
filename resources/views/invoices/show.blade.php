@@ -14,18 +14,12 @@
 @endsection
 
 @section('main_content')
-
     <section class="content">
         <div class="row">
-            <div class="col-lg-12 col-xs-12">                
-
-
-
+            <div class="col-lg-12 col-xs-12">  
                 <div class="panel panel-default">
                     <div class="panel-heading">Deatils for Invoice ID: {{ $invoice->id }}</div>
                     <div class="panel-body">
-
-                        <a href="{{ url('invoices/' . $invoice->id . '/edit') }}" data-toggle="tooltip" class="btn btn-primary btn-xs" title="Edit Invoice"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
                         {!! Form::open([
                             'method'=>'DELETE',
                             'url' => ['invoices', $invoice->id],
@@ -39,7 +33,6 @@
                                     'onclick'=>'return confirm("Confirm delete?")'
                             ))!!}
                         {!! Form::close() !!}
-                        {{-- <a href="{{ route('invoices.print', $invoice->id) }}" data-toggle="tooltip" class="btn btn-success btn-xs" title="Print Invoice"><span class="glyphicon glyphicon-print" aria-hidden="true"/></a> --}}
                         <br/>
                         <br/>
 

@@ -22,81 +22,83 @@ class AppointmentsController extends Controller
         $this->middleware('auth:web,admin');
     }
     
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    
     public function index()
     {
         error_log("Inside index page");
-        $appointments = Appointment::paginate(25);
-        if(Auth::guard('web')->check())
-            return view('appointments.index', compact('appointments')); 
-        return view('appointments.admin_index', compact('appointments')); 
+        
+        if(Auth::guard('admin')->check())
+        {   
+            $appointments = Appointment::paginate(25);
+            return view('appointments.admin_index', compact('appointments')); 
+        }
+        else
+        {
+            $id = Auth::user()->id;
+            $patient = User::where('id', $id)->first();
+            $appointments = Appointment::where('patient_id', $patient->id)->paginate(10);
+
+            if ($appointments->isEmpty()) {
+                return view('home.appointments.index');
+            } 
+            else {
+                return view('appointments.index', ['appointments' => $appointments]);
+            }
+        } 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $tests = Test::all();
-        $patients = User::all();
-        
-        $patient_data = [];
-        $test_data = [];
-        
-        foreach ($patients as $patient) {
-            $patient_data[$patient->id] = $patient->name;
+        if(Auth::guard('admin')->check())
+        { 
+            $tests = Test::all();
+            $patients = User::all();
             
+            $patient_data = [];
+            $test_data = [];
+            
+            foreach ($patients as $patient) {
+                $patient_data[$patient->id] = $patient->name;
+                
+            }
+            foreach ($tests as $test) {
+                $test_data[$test->id] = $test->name;
+            }
+            
+            return view('appointments.admin_create', ['tests' => $test_data, 'patients' => $patient_data]);
         }
-        foreach ($tests as $test) {
-            $test_data[$test->id] = $test->name;
-        }
+        else
+        {
+            $tests = Test::all();
+            $id = Auth::user()->id;
+            $patient = User::where('id', $id)->first();
+            $test_data = [];
 
-        error_log("Inside the create appointment");
-        
-        return view('appointments.create', ['tests' => $test_data, 'patients' => $patient_data]);
+            foreach ($tests as $test) {
+                $test_data[$test->id] = $test->name;
+            }
+
+            return view('appointments.create', ['tests' => $test_data, 'patient' => $patient]);
+        }
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $requestData = $request->all();
         $requestData['status'] = 'pending';
 
-        //dd($requestData);
-
         $appointment = Appointment::create($requestData);
 
         // create invoice for this appointment
         $id = $this->createInvoice($appointment);
-
-        //dd($id);
-
-        // send it to patient's mail
-
-        Session::flash('flash_message', 'Appointment added!');
+        if(Auth::guard('admin')->check())
+            Session::flash('flash_message', 'Appointment added!');
+        else
+            Session::flash('flash_message', 'Appointment added! Please check the invoice to make payment');
 
         return redirect('appointments');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $appointment = Appointment::findOrFail($id);
@@ -108,12 +110,6 @@ class AppointmentsController extends Controller
         
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $tests = Test::all();
@@ -135,13 +131,6 @@ class AppointmentsController extends Controller
                 'tests' => $test_data]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $requestData = $request->all();
@@ -154,12 +143,6 @@ class AppointmentsController extends Controller
         return redirect('appointments');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         Appointment::destroy($id);
@@ -197,40 +180,29 @@ class AppointmentsController extends Controller
         $slots = unserialize($test->slot);
 
         if ( $appointments->isEmpty() ) {
-
-            // all slots are available
-            // return all slots for this test
             $slots = Slot::find($slots);
             return response()->json(['status' => 'found', 'slots' => $slots->toArray()]);
-        } else {
+        } 
+        else {
 
             foreach ($appointments as $appointment) {
                 
                 if(($key = array_search($appointment->slot_id, $slots)) !== false) {
                     unset($slots[$key]);
                 }
-
             }
 
             if ( empty($slots) ) {
-
                 // all slots are occupied
                 return response()->json(['status' => 'all_busy']);
             } else {
-
                 // some slots are still available, return them
                 $slots = Slot::find($slots);
                 return response()->json(['status' => 'found', 'slots' => $slots->toArray()]);
-
-
             }
-
-
-
         }                       
 
         return response()->json(['status' => 'error']);
-        //return response()->json(['slots' => $slots]);
 
     }
 }
