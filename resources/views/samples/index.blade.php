@@ -49,7 +49,7 @@
 
                                         {!! Form::open([
                                             'method'=>'GET',
-                                            'url' => '/reports/create',
+                                            'url' => '/admin/reports/create',
                                             'style' => 'display:inline'
                                         ]) !!}
                                             {!! Form::button('<span class="glyphicon glyphicon-share" aria-hidden="true"  />', array(

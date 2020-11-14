@@ -2,119 +2,89 @@
 @section('content')
 
 <section class="content">
-
-    <div class="row">
-        <div class="col-lg-12 col-xs-12">
-            @if(Session::has('flash_message'))
-                <div class="alert alert-success alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="icon fa fa-check"></i>Success!</h4>
-                    {!! session('flash_message') !!}
-                </div>
-            @endif
-        </div>
-    </div>
-
     <div class="row">
         <div class="col-lg-12 col-xs-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Appointments</div>
+                <div class="panel-heading">Invoices</div>
                 <div class="panel-body">
 
-                    <a href="{{ url('/appointments/create') }}" class="btn btn-primary btn-xs" title="Add New Appointment"><span class="glyphicon glyphicon-plus" aria-hidden="true"></a>
+                    <a href="{{ url('/invoices/create') }}" class="btn btn-primary btn-xs" title="Add New Invoice"><span class="glyphicon glyphicon-plus" aria-hidden="true"/></a>
                     <br/>
                     <br/>
                     <div class="table-responsive">
                         <table class="table table-borderless">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th> Patient Name </th>
-                                    <th> Test Name </th>
-                                    <th> Status </th>
-                                    <th> Date </th>
+                                    <th>Invoice ID</th>
+                                    <th>Appointment ID</th>
+                                    <th>Patient Name</th>
+                                    <th>Amount</th>
+                                    <th>Status </th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach($appointments as $item)
+                            @foreach($invoices as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->patient->name }}</td> 
-                                    <td>{{ $item->test->name }}</td>
+                                    <td>{{ $item->appointment_id }}</td>
+                                    <td>{{ $item->appointment->patient->name }}</td>
+                                    <td>{{ $item->amount }}</td>
                                     @php
                                         $color;
-                                        if($item->status == 'pending'){
+                                        if($item->status == 'unpaid'){
                                             $color = 'bg-yellow';
-                                        } elseif ($item->status == 'done') {
+                                        } elseif ($item->status == 'paid') {
                                             $color = 'bg-green';
-                                        } elseif ($item->status == 'processing') {
-                                            $color = 'bg-blue';
                                         } else {
                                             $color = 'bg-red';
                                         }
                                     @endphp
                                     <td><small class="label {{ $color }}">{{ $item->status }}</small></td>
-                                    <td>{{ $item->date }}</td>
                                     <td>
-                                        
-                                            
 
-                                            @if(Auth::guard('admin')->check())
-                                                
-                                                @if($item->status == 'pending')
-                                                
-                                                <a href="{{ url('/admin/appointments/' . $item->id) }}" class="btn btn-success btn-xs" title="View Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
-                                                {!! Form::open([
-                                                    'method'=>'GET',
-                                                    'url' => ['/admin/samples/create'],
-                                                    'style' => 'display:inline'
-                                                ]) !!}
-                                                    {!! Form::button('<span class="glyphicon glyphicon-share" aria-hidden="true"/>', array(
-                                                            'type' => 'submit',
-                                                            'class' => 'btn btn-info btn-xs',
-                                                            'title' => 'Collect Sample',
-                                                            'data-toggle' => 'tooltip'
-                                                    )) !!}
-                                                    {{ Form::hidden('appointment_id', $item->id) }}
-                                                    {{ Form::hidden('patient_id', $item->patient->id) }}
-                                                    {{ Form::hidden('test_id', $item->test->id) }}
-                                                {!! Form::close() !!}
+                                        @if($item->status == 'paid') 
+                                        <a href="{{ url('/invoices/' . $item->id) }}" class="btn btn-success btn-xs" data-toggle="tooltip" title="View Invoice"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
+                                        @else
 
-                                                @else
+                                        <a href="{{ url('/invoices/' . $item->id) }}" class="btn btn-success btn-xs" data-toggle="tooltip" title="View Invoice"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
+                                        <a href="{{ url('/invoices/' . $item->id . '/edit') }}" data-toggle="tooltip" class="btn btn-primary btn-xs" title="Edit Invoice"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
 
-                                                    <a href="{{ url('/appointments/' . $item->id) }}" class="btn btn-success btn-xs" title="View Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
-                                                @endif
+                                        {!! Form::open([
+                                            'method'=>'DELETE',
+                                            'url' => ['/invoices', $item->id],
+                                            'style' => 'display:inline'
+                                        ]) !!}
+                                            {!! Form::button('<span class="glyphicon glyphicon-trash" aria-hidden="true"/>', array(
+                                                    'type' => 'submit',
+                                                    'class' => 'btn btn-danger btn-xs',
+                                                    'title' => 'Delete Invoice',
+                                                    'data-toggle' => 'tooltip',
+                                                    'onclick'=>'return confirm("Confirm delete?")'
+                                            )) !!}
+                                        {!! Form::close() !!}
 
-                                            @else
+                                        {!! Form::open([
+                                            'method'=>'GET',
+                                            'url' => ['admin/payments/create'],
+                                            'style' => 'display:inline'
+                                        ]) !!}
+                                            {!! Form::button('<span class="glyphicon glyphicon-usd" aria-hidden="true"/>', array(
+                                                    'type' => 'submit',
+                                                    'class' => 'btn btn-info btn-xs',
+                                                    'title' => 'Make Payment',
+                                                    'data-toggle' => 'tooltip'
+                                            )) !!}
+                                            {{ Form::hidden('invoice_id', $item->id) }}
+                                        {!! Form::close() !!}
+                                        @endif
 
-                                                <a href="{{ url('/appointments/' . $item->id) }}" class="btn btn-success btn-xs" title="View Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
-                                                <a href="{{ url('/appointments/' . $item->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
-                                                {!! Form::open([
-                                                    'method'=>'DELETE',
-                                                    'url' => ['/appointments', $item->id],
-                                                    'style' => 'display:inline'
-                                                ]) !!}
-                                                    {!! Form::button('<span class="glyphicon glyphicon-trash" aria-hidden="true" title="Delete Appointment" />', array(
-                                                            'type' => 'submit',
-                                                            'class' => 'btn btn-danger btn-xs',
-                                                            'title' => 'Delete Appointment',
-                                                            'onclick'=>'return confirm("Confirm delete?")'
-                                                    )) !!}
-                                                {!! Form::close() !!}
-
-
-                                            @endif
-
-                                        
-
-                            
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
-                        <div class="pagination-wrapper"> {!! $appointments->render() !!} </div>
+                        <div class="pagination-wrapper"> {!! $invoices->render() !!} </div>
                     </div>
 
                 </div>

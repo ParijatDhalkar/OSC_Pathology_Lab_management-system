@@ -77,7 +77,7 @@
 
                                             {!! Form::open([
                                                 'method'=>'GET',
-                                                'url' => ['/home/payments/create'],
+                                                'url' => ['/admin/payments/create'],
                                                 'style' => 'display:inline'
                                             ]) !!}
                                                 {!! Form::button('<span class="glyphicon glyphicon-usd" aria-hidden="true"/>', array(

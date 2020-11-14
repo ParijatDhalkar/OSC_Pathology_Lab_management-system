@@ -33,8 +33,8 @@ class InvoicesController extends Controller
         {
             //We have to change query here
             $id=Auth::id();
-            $invoices = DB::select('select * from invoices i inner join appointments a on i.appointment_id=a.id where a.patient_id= $id');
-            //$invoices = Invoice::paginate(25);
+            //$invoices = DB::select('select * from invoices i inner join appointments a on i.appointment_id=a.id where a.patient_id='+$id);
+            $invoices = Invoice::paginate(25);
             //return view('invoices.index', ['invoices' => $invoices]);
             return view('invoices.index_user', compact('invoices'));
         }
@@ -89,8 +89,10 @@ class InvoicesController extends Controller
     public function show($id)
     {
         $invoice = Invoice::findOrFail($id);
-
-        return view('invoices.show', compact('invoice'));
+        if(Auth::guard('admin')->check())
+            return view('invoices.show', compact('invoice'));
+        else
+            return view('invoices.show_user', compact('invoice'));
     }
 
     /**
