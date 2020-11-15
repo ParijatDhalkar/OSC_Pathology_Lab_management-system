@@ -1,5 +1,19 @@
-@extends('layouts.user')
-@section('content')
+@extends('layouts.admin')
+
+@section('title') Pathology Lab | Home @endsection
+
+@section('content_header')
+
+<section class="content-header">
+      <h1>
+        Appointments
+        <small>Add New</small>
+      </h1>
+    </section>
+    
+@endsection
+
+@section('main_content')
 
 <div class="container">
   <section class="content">
@@ -18,9 +32,9 @@
                         </ul>
                     @endif
 
-                    {!! Form::open(['url' => '/appointments', 'class' => 'form-horizontal', 'files' => true]) !!}
+                    {!! Form::open(['url' => '/admin/appointments', 'class' => 'form-horizontal', 'files' => true]) !!}
 
-                    @include ('appointments.form')
+                    @include ('appointments.admin_form')
 
                     {!! Form::close() !!}
 
@@ -51,9 +65,6 @@
 
 
 <script>
-
-    //Lockr.rm('test_id');
-    //console.log('test');
     console.log(Lockr.get('test_id'));
     console.log(Lockr.get('slot_id'));
     
@@ -68,17 +79,7 @@
       $('.slot_info').show();
       $('.selected_slot').text(slot_time);
     }
-    // $(document).ready(function(){
-  
-    //     // check if pre selected vales are present in local storage
-    //     Lockr.rm('test_id');
-    //     Lockr.flush();
-    //     console.log('test');
-    //     console.log(Lockr.get('test_id'));
-    //     console.log(Lockr.get('slot_id'));
-        
-    // });
-  
+    
     $('.form-btn').on('click', function(e){
   
       e.preventDefault();

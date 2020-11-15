@@ -86,7 +86,6 @@ class AppointmentsController extends Controller
     {
         $requestData = $request->all();
         $requestData['status'] = 'pending';
-
         $appointment = Appointment::create($requestData);
 
         // create invoice for this appointment

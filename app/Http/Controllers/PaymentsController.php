@@ -25,8 +25,13 @@ class PaymentsController extends Controller
 
     public function create(Request $request)
     {
-        $invoice_id = $request->invoice_id;
-        return view('payments.create', ['invoice_id' => $invoice_id]);
+        if(Auth::guard('web')->check())
+        {   
+            $invoice_id = $request->invoice_id;
+            return view('payments.create', ['invoice_id' => $invoice_id]);
+        }
+        else
+            abort(404);
     }
 
     public function store(Request $request)

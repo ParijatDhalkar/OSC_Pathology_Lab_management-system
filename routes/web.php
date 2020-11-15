@@ -42,6 +42,8 @@ Route::prefix('admin')->group(function() {
 
     Route::resource('fields', 'App\Http\Controllers\FieldsController');
 
+    Route::resource('appointments', 'App\Http\Controllers\AppointmentsController');
+
     Route::resource('samples', 'App\Http\Controllers\SamplesController');
 
     Route::resource('invoices', 'App\Http\Controllers\InvoicesController');

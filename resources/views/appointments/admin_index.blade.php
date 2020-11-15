@@ -71,7 +71,7 @@
                                            
                                             @if($item->status == 'pending')
                                             
-                                                <a href="{{ url('/appointments/' . $item->id) }}" class="btn btn-success btn-xs" title="View Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
+                                                <a href="{{ url('/admin/appointments/' . $item->id) }}" class="btn btn-success btn-xs" title="View Appointment" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
                                                 {!! Form::open([
                                                     'method'=>'GET',
                                                     'url' => ['/admin/samples/create'],

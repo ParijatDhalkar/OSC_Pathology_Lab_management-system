@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\Field;
 use App\Models\Sample;
+use App\Models\User;
 use App\Models\Appointment;
 use Session;
 use Carbon\Carbon;
@@ -28,8 +29,10 @@ class ReportsController extends Controller
         }
         else
         {
-            //We have to write query here, for now all reports are visible
-            $reports = Report::paginate(25);
+            $id =Auth::user()->id;
+            $patient = User::where('id', $id)->first();
+            $samples = Sample::where('patient_id', $patient->id)->pluck('id')->toArray();
+            $reports = Report::whereIn('sample_id', $samples)->paginate(10);
             return view('reports.index_user', compact('reports'));
         }
     }
@@ -146,8 +149,13 @@ class ReportsController extends Controller
 
     public function destroy($id)
     {
-        Report::destroy($id);
-        Session::flash('flash_message', 'Report deleted!');
-        return redirect('reports');
+        if(Auth::guard('admin')->check())
+        {
+            Report::destroy($id);
+            Session::flash('flash_message', 'Report deleted!');
+            return redirect('reports');
+        }
+        else
+            abort(404);
     }
 }

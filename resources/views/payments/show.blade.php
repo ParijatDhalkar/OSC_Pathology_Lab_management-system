@@ -24,7 +24,7 @@
                         
                         {!! Form::open([
                             'method'=>'DELETE',
-                            'url' => ['payments', $payment->id],
+                            'url' => ['/admin/payments', $payment->id],
                             'style' => 'display:inline'
                         ]) !!}
                             {!! Form::button('<span class="glyphicon glyphicon-trash" aria-hidden="true"/>', array(
