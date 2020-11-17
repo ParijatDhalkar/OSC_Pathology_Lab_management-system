@@ -23,7 +23,9 @@
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->sample_id }}</td><td>{{ $item->remarks }}</td>
                                         <td>
+                                            
                                             <a href="{{ url('/reports/' . $item->id) }}" class="btn btn-success btn-xs" title="View Report"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
+                                            <a href="{{ route('reports.print', $item->id) }}" target="_blank" class="btn btn-success"><i class="fa fa-print"></i> Print</a> 
                                             
                                         </td>
                                     </tr>

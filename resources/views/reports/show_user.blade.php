@@ -8,7 +8,7 @@
                     <div class="panel-heading">Report {{ $report->id }}</div>
                     <div class="panel-body">
 
-                        {{-- <a href="{{ route('reports.print', $report->id) }}" class="btn btn-success"><i class="fa fa-print"></i> Print</a> --}}
+                        <a href="{{ route('reports.print', $report->id) }}" target="_blank" class="btn btn-success"><i class="fa fa-print"></i> Print</a> 
                         
                         <br/>
                         <br/>

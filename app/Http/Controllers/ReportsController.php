@@ -12,6 +12,10 @@ use Session;
 use Carbon\Carbon;
 use Auth;
 use DB;
+use PDF;
+use App;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class ReportsController extends Controller
 {
@@ -96,7 +100,7 @@ class ReportsController extends Controller
         {
             //here we have to check if the report belongs to him
             $report = Report::findOrFail($id);
-            return view('reports.show', ['report' => $report, 'results' => json_decode($report->results)]);
+            return view('reports.show_user', ['report' => $report, 'results' => json_decode($report->results)]);
         }
     }
 
@@ -158,4 +162,41 @@ class ReportsController extends Controller
         else
             abort(404);
     }
+
+    public function printReport($id)
+    {
+        // $pdf = App::make('dompdf.wrapper');
+        // $pdf->loadHTML('<h1>Test</h1>');
+        // return $pdf->stream();
+        // $data = ["Kush is here"];
+        // $pdf = PDF::loadView('pdf.reports', $data);
+        // return $pdf->download('reports.pdf');
+
+        $report = Report::findOrFail($id)->first();
+
+        $data['results'] = json_decode($report->results);
+
+        //dd($data);
+
+        $sample = $report->sample;
+
+        $patient = $sample->patient;
+
+        $test = $sample->test;
+
+        //dd($sample->toArray());
+        $data['report'] = $report->toArray();
+        $data['sample'] = $sample->toArray();
+        $data['patient'] = $patient->toArray();
+        $data['test'] = $test->toArray();
+
+
+
+        //$pdf = \PDF::loadView('pdf.reports', $data);
+        $pdf = PDF::loadView('pdf.reports', $data);
+        //dd($pdf);
+        return $pdf->download('reports.pdf');
+        //return $pdf->inline();
+    }
+
 }

@@ -30,6 +30,8 @@ Route::get('/invoices/{invoice}', [App\Http\Controllers\InvoicesController::clas
 Route::get('/reports', [App\Http\Controllers\ReportsController::class, 'index'])->name('reports.index_user');
 Route::get('/reports/{report}', [App\Http\Controllers\ReportsController::class, 'show'])->name('reports.show_user');
 
+Route::get('reports/print/{id}', [App\Http\Controllers\ReportsController::class, 'printReport'])->name('reports.print');
+
 Route::prefix('admin')->group(function() {
     
     Route::get('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'showLoginForm'])->name('admin.login');

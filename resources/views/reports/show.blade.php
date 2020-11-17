@@ -25,6 +25,7 @@
                     <div class="panel-body">
 
                         <a href="{{ url('/admin/reports/' . $report->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit Report"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
+                        <a href="{{ route('reports.print', $report->id) }}" target="_blank" class="btn btn-success"><i class="fa fa-print"></i> Print</a> 
                         {!! Form::open([
                             'method'=>'DELETE',
                             'url' => ['/admin/reports', $report->id],
