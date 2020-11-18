@@ -1,10 +1,6 @@
-<div class="form-group {{ $errors->has('patient_id') ? 'has-error' : ''}}">
-    {!! Form::label('patient_id', 'Patient', ['class' => 'col-md-2 control-label']) !!}
-    <div class="col-md-10">        
-        {!! Form::select('patient_id', $patients, $appointment->patient_id, ['class' => 'form-control']) !!}
-        {!! $errors->first('patient_id', '<p class="help-block">:message</p>') !!}
-    </div>
-</div>
+
+{{ Form::hidden('patient_id', $appointment->patient_id) }}
+
 <div class="form-group {{ $errors->has('test_id') ? 'has-error' : ''}}">
     {!! Form::label('test_id', 'Test', ['class' => 'col-md-2 control-label']) !!}
     <div class="col-md-10">
