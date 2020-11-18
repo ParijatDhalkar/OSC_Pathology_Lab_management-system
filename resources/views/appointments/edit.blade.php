@@ -1,38 +1,30 @@
 @extends('layouts.user')
 @section('content')
-  <section class="content">
-      <div class="row">
-          <div class="col-lg-12 col-xs-12">
+<div class="container">
+    <div class="card">
+        <h5 class="card-header">Edit Appointment {{ $appointment->id }}</h5>
+        <div class="card-body">
+            @if ($errors->any())
+                <ul class="alert alert-danger">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
 
-              <div class="panel panel-default">
-                  <div class="panel-heading">Edit Appointment {{ $appointment->id }}</div>
-                  <div class="panel-body">
+            {!! Form::model($appointment, [
+                'method' => 'PATCH',
+                'url' => ['/appointments', $appointment->id],
+                'class' => 'form-horizontal',
+                'files' => true
+            ]) !!}
 
-                      @if ($errors->any())
-                          <ul class="alert alert-danger">
-                              @foreach ($errors->all() as $error)
-                                  <li>{{ $error }}</li>
-                              @endforeach
-                          </ul>
-                      @endif
+            @include ('appointments.form_edit', ['submitButtonText' => 'Update'])
 
-                      {!! Form::model($appointment, [
-                          'method' => 'PATCH',
-                          'url' => ['/appointments', $appointment->id],
-                          'class' => 'form-horizontal',
-                          'files' => true
-                      ]) !!}
-
-                      @include ('appointments.form_edit', ['submitButtonText' => 'Update'])
-
-                      {!! Form::close() !!}
-
-                  </div>
-              </div>
-
+            {!! Form::close() !!}
           </div>
       </div>
-  </section>
+    </div>
 
 @endsection
 
