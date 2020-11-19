@@ -8,11 +8,12 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th scope="col">Invoice ID</th>
                             <th scope="col">Appointment ID</th>
                             <th scope="col">Amount</th>
                             <th scope="col">Status </th>
                             <th scope="col">Actions</th>
-                            <th scope="col">Invoice ID</th>
+                            
                         </tr>
                     </thead>
                     <tbody>

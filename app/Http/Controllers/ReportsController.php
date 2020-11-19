@@ -134,6 +134,7 @@ class ReportsController extends Controller
                 $result['unit'] = $field['unit'];
                 $result['normal'] = $field['normal'];
                 $result['field_id'] = $field['id'];
+                $result['ref_range'] = $field['ref_range'];
 
                 array_push($results, $result);
 
@@ -165,13 +166,7 @@ class ReportsController extends Controller
 
     public function printReport($id)
     {
-        // $pdf = App::make('dompdf.wrapper');
-        // $pdf->loadHTML('<h1>Test</h1>');
-        // return $pdf->stream();
-        // $data = ["Kush is here"];
-        // $pdf = PDF::loadView('pdf.reports', $data);
-        // return $pdf->download('reports.pdf');
-
+        error_log("ID isssssssss $id");
         $report = Report::findOrFail($id)->first();
 
         $data['results'] = json_decode($report->results);

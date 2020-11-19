@@ -68,15 +68,25 @@ class TestsController extends Controller
 
     public function update($id, Request $request)
     {
+        // $requestData = $request->all();
+        // $requestData['slot'] = serialize($requestData['slot']);
+        
+        // $test = Test::findOrFail($id);
+        // $test->name = $request->input('name');
+        // $test->code = $request->input('code');
+        // $test->description = $request->input('description');
+        // $test->cost = $request->input('cost');
+        // $test->slot = $requestData['slot'];
+
+        // Session::flash('flash_message', 'Test updated!');
+
+        // return redirect('admin/tests');
+
         $requestData = $request->all();
         $requestData['slot'] = serialize($requestData['slot']);
         
         $test = Test::findOrFail($id);
-        $test->name = $request->input('name');
-        $test->code = $request->input('code');
-        $test->description = $request->input('description');
-        $test->cost = $request->input('cost');
-        $test->slot = $requestData['slot'];
+        $test->update($requestData);
 
         Session::flash('flash_message', 'Test updated!');
 
